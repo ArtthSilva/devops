@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Task App</title>
+</head>
+<body>
+    <h1>Lista de tasks</h1>
+    <ul id="task-list"></ul>
+    <input type="text" id="task-input" placeholder="adicione uma task">
+    <button id="add-task">Add Task</button>
+
+    <script>
+        const API_URL = 'http://localhost:3000/tasks';
+
+        async function fetchTasks() {
+            try {
+                const response = await fetch(API_URL);
+                const tasks = await response.json();
+                const taskList = document.getElementById('task-list');
+                taskList.innerHTML = '';
+
+                tasks.forEach(task => {
+                    const li = document.createElement('li');
+                    li.textContent = task.taskName;
+                    taskList.appendChild(li);
+                });
+            } catch (error) {
+                console.error('Erro ao buscar tasks:', error);
+            }
+        }
+
+        async function addTask(taskName) {
+            try {
+                const response = await fetch(API_URL, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ taskName })
+                });
+
+                if (response.ok) {
+                    console.log('Task adicionada com sucesso');
+                    fetchTasks(); 
+                } else {
+                    console.error('Erro ao adicionar task');
+                }
+            } catch (error) {
+                console.error('Error ao criar task:', error);
+            }
+        }
+
+        document.getElementById('add-task').addEventListener('click', () => {
+            const taskInput = document.getElementById('task-input');
+            const taskName = taskInput.value;
+
+            if (taskName) {
+                addTask(taskName);
+                taskInput.value = ''; 
+            }
+        });
+
+        window.onload = fetchTasks;
+    </script>
+</body>
+</html>
