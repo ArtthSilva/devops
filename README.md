@@ -28,12 +28,15 @@ devops/
 ```bash
 docker network create devops
 ```
-
+![criando network](/evidencias/criando_network.png)
+---
 ### 2. Executar o MongoDB
 
 ```bash
 docker run -d --name mongo --network devops -p 27017:27017 mongo:latest
 ```
+![executando mongodb](/evidencias/executando_mongodb.png)
+---
 
 ### 3. Construir e executar o Backend
 
@@ -42,12 +45,15 @@ docker run -d --name mongo --network devops -p 27017:27017 mongo:latest
 docker build -t backend-image .
 docker run --name backend --network devops -p 3000:3000 backend-image
 ```
-
+![criando backend](/evidencias/criando_backend.png)
+---
 ### 4. Executar o Frontend
 
 ```bash
 docker run --name frontend --network devops -p 8080:80 -v "/home/arthur/Documentos/faculdade/devops/frontend:/usr/share/nginx/html" nginx:alpine
 ```
+![executando frontend](/evidencias/executando_frontend.png)
+---
 
 ## 📋 Comandos Úteis
 
